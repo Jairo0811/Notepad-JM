@@ -1,3 +1,4 @@
+using NotepadJM.Models;
 using NotepadJM.Services;
 using NotepadJM.ViewModels;
 using System.ComponentModel;
@@ -75,6 +76,21 @@ public partial class MainWindow : Window
 
         CurrentEditor.SelectedText = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
         CurrentEditor.Focus();
+    }
+
+    private void Editor_SelectionChanged(object sender, RoutedEventArgs e)
+    {
+        if (sender is not TextBox editor)
+        {
+            return;
+        }
+
+        var caretIndex = editor.CaretIndex;
+        var lineIndex = editor.GetLineIndexFromCharacterIndex(caretIndex);
+        var lineStart = editor.GetCharacterIndexFromLineIndex(lineIndex);
+        var columnIndex = caretIndex - lineStart;
+
+        _viewModel.UpdateCursorPosition(lineIndex + 1, columnIndex + 1);
     }
 
     private void Window_DragOver(object sender, DragEventArgs e)
