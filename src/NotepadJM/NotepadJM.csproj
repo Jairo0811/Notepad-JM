@@ -9,6 +9,10 @@
     <RootNamespace>NotepadJM</RootNamespace>
     <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
     <Version>2.0.0</Version>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
