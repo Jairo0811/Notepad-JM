@@ -1,8 +1,7 @@
 <p align="center">
-  <img src="src/NotepadJM/Assets/NotepadJM-Logo.jpg" alt="Logo de Notepad JM" width="720">
+  <img src="src/NotepadJM/Assets/NotepadJM-Logo.jpg" alt="Logo de Notepad JM" width="500">
 </p>
 
-# 📝 Notepad JM
 
 **Notepad JM** es un editor de texto moderno para Windows, desarrollado con **C#**, **WPF** y **.NET 10**.
 
