@@ -6,7 +6,21 @@
 
 **Notepad JM** es un editor de texto moderno para Windows, desarrollado con **C#**, **WPF** y **.NET 10**.
 
-El proyecto nació como una tarea de la asignatura **Diseño Centrado en el Usuario (DCU)** en ITLA y fue completamente reescrito para convertirlo en una aplicación de escritorio moderna, mantenible y apta para portafolio.
+El proyecto nació como una tarea de la asignatura **Diseño Centrado en el Usuario (SOF-010)** en ITLA y fue completamente reescrito para convertirlo en una aplicación de escritorio moderna, mantenible y apta para portafolio.
+
+## 🎓 Información académica
+
+| Dato | Información |
+|---|---|
+| 👨‍🎓 **Estudiante** | Francis Jairo Matías Rosario |
+| 🆔 **Matrícula** | 2015-2984 |
+| 📖 **Asignatura** | Diseño Centrado en el Usuario (SOF-010) |
+| 👨‍🏫 **Profesor** | Juan Martínez López |
+| 🏫 **Institución** | Instituto Tecnológico de Las Américas (ITLA) |
+| 📅 **Período académico** | 2018-C1 |
+| 📝 **Tipo de entrega** | Tarea académica |
+
+> **Nota:** la entrega original fue una tarea de la asignatura, no un proyecto final.
 
 ## ✨ Funcionalidades
 
@@ -58,12 +72,16 @@ Notepad-JM/
 
 ## 🛠️ Tecnologías
 
-- C#
-- .NET 10
-- WPF
-- XAML
-- MVVM
-- System.Text.Json
+<p>
+  <img src="https://skillicons.dev/icons?i=cs,dotnet,visualstudio,windows,git,github" alt="C#, .NET, Visual Studio, Windows, Git y GitHub" />
+</p>
+
+<p>
+  <img src="https://img.shields.io/badge/WPF-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="WPF" />
+  <img src="https://img.shields.io/badge/XAML-0C54C2?style=flat-square&logo=xaml&logoColor=white" alt="XAML" />
+  <img src="https://img.shields.io/badge/MVVM-Arquitectura-6C2DC7?style=flat-square" alt="Arquitectura MVVM" />
+  <img src="https://img.shields.io/badge/System.Text.Json-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="System.Text.Json" />
+</p>
 
 ## ▶️ Ejecución
 
