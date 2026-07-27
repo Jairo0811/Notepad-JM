@@ -70,10 +70,12 @@ Notepad-JM/
 
 `MainWindowViewModel` coordina los documentos y comandos de la aplicación. Los servicios abstraen el acceso a archivos, la configuración local, la recuperación automática, los diálogos y el cambio de tema. El code-behind queda limitado a responsabilidades propias de WPF, como el arrastre de archivos y la interacción con la selección del editor.
 
-## 🛠️ Tecnologías
+## 🛠️ Stack tecnológico
+
+### 💻 Tecnologías principales
 
 <p>
-  <img src="https://skillicons.dev/icons?i=cs,dotnet,visualstudio,windows,git,github" alt="C#, .NET, Visual Studio, Windows, Git y GitHub" />
+  <img src="https://skillicons.dev/icons?i=cs,dotnet" alt="C# y .NET" />
 </p>
 
 <p>
@@ -81,6 +83,12 @@ Notepad-JM/
   <img src="https://img.shields.io/badge/XAML-0C54C2?style=flat-square&logo=xaml&logoColor=white" alt="XAML" />
   <img src="https://img.shields.io/badge/MVVM-Arquitectura-6C2DC7?style=flat-square" alt="Arquitectura MVVM" />
   <img src="https://img.shields.io/badge/System.Text.Json-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="System.Text.Json" />
+</p>
+
+### 🧰 Entorno y herramientas
+
+<p>
+  <img src="https://skillicons.dev/icons?i=visualstudio,windows,git,github" alt="Visual Studio, Windows, Git y GitHub" />
 </p>
 
 ## ▶️ Ejecución
