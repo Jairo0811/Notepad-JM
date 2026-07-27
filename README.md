@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="src/NotepadJM/Assets/NotepadJM-Logo.jpg" alt="Logo de Notepad JM" width="720">
+</p>
+
 # 📝 Notepad JM
 
 **Notepad JM** es un editor de texto moderno para Windows, desarrollado con **C#**, **WPF** y **.NET 10**.
@@ -28,13 +32,20 @@ El proyecto nació como una tarea de la asignatura **Diseño Centrado en el Usua
 
 ## 🧱 Arquitectura
 
-La solución utiliza una arquitectura WPF modular y pragmática:
+La solución utiliza el patrón **MVVM** con servicios desacoplados para persistencia, diálogos, archivos y temas:
 
 ```text
 Notepad-JM/
 ├── src/
 │   └── NotepadJM/
+│       ├── Assets/
+│       │   ├── AppIcon.ico
+│       │   ├── AppIcon.png
+│       │   └── NotepadJM-Logo.jpg
+│       ├── Commands/
 │       ├── Models/
+│       ├── Services/
+│       ├── ViewModels/
 │       ├── App.xaml
 │       ├── FindReplaceWindow.xaml
 │       ├── MainWindow.xaml
@@ -43,7 +54,7 @@ Notepad-JM/
 └── README.md
 ```
 
-La lógica de documentos se encapsula en `DocumentTab`, mientras que las interacciones específicas de la interfaz se mantienen en las ventanas WPF. Esta separación evita sobrearquitectura sin sacrificar mantenibilidad.
+`MainWindowViewModel` coordina los documentos y comandos de la aplicación. Los servicios abstraen el acceso a archivos, la configuración local, la recuperación automática, los diálogos y el cambio de tema. El code-behind queda limitado a responsabilidades propias de WPF, como el arrastre de archivos y la interacción con la selección del editor.
 
 ## 🛠️ Tecnologías
 
@@ -51,6 +62,7 @@ La lógica de documentos se encapsula en `DocumentTab`, mientras que las interac
 - .NET 10
 - WPF
 - XAML
+- MVVM
 - System.Text.Json
 
 ## ▶️ Ejecución
@@ -73,7 +85,9 @@ dotnet run --project .\src\NotepadJM\NotepadJM.csproj
 ### Compilar
 
 ```powershell
-dotnet build .\NotepadJM.sln
+dotnet restore .\NotepadJM.sln
+dotnet build .\NotepadJM.sln -c Debug --no-restore
+dotnet build .\NotepadJM.sln -c Release --no-restore
 ```
 
 ### Publicar una versión portable

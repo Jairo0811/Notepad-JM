@@ -7,6 +7,11 @@
     <Nullable>enable</Nullable>
     <AssemblyName>NotepadJM</AssemblyName>
     <RootNamespace>NotepadJM</RootNamespace>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
     <Version>2.0.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\AppIcon.ico" />
+  </ItemGroup>
 </Project>

@@ -36,6 +36,7 @@ public sealed class DocumentTab : INotifyPropertyChanged
             _filePath = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(DisplayName));
+            OnPropertyChanged(nameof(Header));
         }
     }
 

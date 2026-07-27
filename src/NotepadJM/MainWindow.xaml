@@ -2,49 +2,104 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:models="clr-namespace:NotepadJM.Models"
-        Title="Notepad JM" Height="760" Width="1180" MinHeight="560" MinWidth="820"
-        AllowDrop="True" Drop="Window_Drop" DragOver="Window_DragOver"
-        Closing="Window_Closing">
+        Title="{Binding WindowTitle}"
+        Height="760"
+        Width="1180"
+        MinHeight="560"
+        MinWidth="820"
+        Icon="Assets/AppIcon.ico"
+        AllowDrop="True"
+        DragOver="Window_DragOver"
+        Drop="Window_Drop"
+        Closing="Window_Closing"
+        Closed="Window_Closed">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Archivo">
-                <MenuItem Header="_Nuevo" InputGestureText="Ctrl+N" Click="New_Click" />
-                <MenuItem Header="_Abrir..." InputGestureText="Ctrl+O" Click="Open_Click" />
+                <MenuItem Header="_Nuevo"
+                          InputGestureText="Ctrl+N"
+                          Command="{Binding NewDocumentCommand}" />
+                <MenuItem Header="_Abrir..."
+                          InputGestureText="Ctrl+O"
+                          Command="{Binding OpenCommand}" />
                 <Separator />
-                <MenuItem Header="_Guardar" InputGestureText="Ctrl+S" Click="Save_Click" />
-                <MenuItem Header="Guardar _como..." InputGestureText="Ctrl+Shift+S" Click="SaveAs_Click" />
-                <MenuItem Header="Guardar _todo" InputGestureText="Ctrl+Alt+S" Click="SaveAll_Click" />
+                <MenuItem Header="_Guardar"
+                          InputGestureText="Ctrl+S"
+                          Command="{Binding SaveCommand}" />
+                <MenuItem Header="Guardar _como..."
+                          InputGestureText="Ctrl+Shift+S"
+                          Command="{Binding SaveAsCommand}" />
+                <MenuItem Header="Guardar _todo"
+                          InputGestureText="Ctrl+Alt+S"
+                          Command="{Binding SaveAllCommand}" />
                 <Separator />
-                <MenuItem Header="Cerrar pestaña" InputGestureText="Ctrl+W" Click="CloseTab_Click" />
-                <MenuItem Header="_Salir" Click="Exit_Click" />
+                <MenuItem Header="Cerrar pestaña"
+                          InputGestureText="Ctrl+W"
+                          Command="{Binding CloseTabCommand}" />
+                <MenuItem Header="_Salir"
+                          Command="{Binding ExitCommand}" />
             </MenuItem>
+
             <MenuItem Header="_Edición">
-                <MenuItem Header="Deshacer" InputGestureText="Ctrl+Z" Click="Undo_Click" />
-                <MenuItem Header="Rehacer" InputGestureText="Ctrl+Y" Click="Redo_Click" />
+                <MenuItem Header="Deshacer"
+                          InputGestureText="Ctrl+Z"
+                          Command="ApplicationCommands.Undo" />
+                <MenuItem Header="Rehacer"
+                          InputGestureText="Ctrl+Y"
+                          Command="ApplicationCommands.Redo" />
                 <Separator />
-                <MenuItem Header="Cortar" InputGestureText="Ctrl+X" Click="Cut_Click" />
-                <MenuItem Header="Copiar" InputGestureText="Ctrl+C" Click="Copy_Click" />
-                <MenuItem Header="Pegar" InputGestureText="Ctrl+V" Click="Paste_Click" />
-                <MenuItem Header="Seleccionar todo" InputGestureText="Ctrl+A" Click="SelectAll_Click" />
+                <MenuItem Header="Cortar"
+                          InputGestureText="Ctrl+X"
+                          Command="ApplicationCommands.Cut" />
+                <MenuItem Header="Copiar"
+                          InputGestureText="Ctrl+C"
+                          Command="ApplicationCommands.Copy" />
+                <MenuItem Header="Pegar"
+                          InputGestureText="Ctrl+V"
+                          Command="ApplicationCommands.Paste" />
+                <MenuItem Header="Seleccionar todo"
+                          InputGestureText="Ctrl+A"
+                          Command="ApplicationCommands.SelectAll" />
                 <Separator />
-                <MenuItem Header="Buscar y reemplazar" InputGestureText="Ctrl+H" Click="FindReplace_Click" />
-                <MenuItem Header="Insertar fecha y hora" InputGestureText="F5" Click="InsertDateTime_Click" />
+                <MenuItem Header="Buscar y reemplazar"
+                          InputGestureText="Ctrl+H"
+                          Command="{Binding FindReplaceCommand}" />
+                <MenuItem Header="Insertar fecha y hora"
+                          InputGestureText="F5"
+                          Command="{Binding InsertDateTimeCommand}" />
             </MenuItem>
+
             <MenuItem Header="_Ver">
-                <MenuItem x:Name="WordWrapMenuItem" Header="Ajuste de línea" IsCheckable="True" IsChecked="True" Click="WordWrap_Click" />
-                <MenuItem Header="Acercar" InputGestureText="Ctrl++" Click="ZoomIn_Click" />
-                <MenuItem Header="Alejar" InputGestureText="Ctrl+-" Click="ZoomOut_Click" />
-                <MenuItem Header="Restablecer zoom" InputGestureText="Ctrl+0" Click="ZoomReset_Click" />
+                <MenuItem Header="Ajuste de línea"
+                          IsCheckable="True"
+                          IsChecked="{Binding IsWordWrapEnabled, Mode=TwoWay}" />
+                <MenuItem Header="Acercar"
+                          InputGestureText="Ctrl++"
+                          Command="{Binding ZoomInCommand}" />
+                <MenuItem Header="Alejar"
+                          InputGestureText="Ctrl+-"
+                          Command="{Binding ZoomOutCommand}" />
+                <MenuItem Header="Restablecer zoom"
+                          InputGestureText="Ctrl+0"
+                          Command="{Binding ResetZoomCommand}" />
                 <Separator />
-                <MenuItem Header="Tema oscuro" Click="DarkTheme_Click" />
-                <MenuItem Header="Tema claro" Click="LightTheme_Click" />
+                <MenuItem Header="Tema oscuro"
+                          Command="{Binding DarkThemeCommand}" />
+                <MenuItem Header="Tema claro"
+                          Command="{Binding LightThemeCommand}" />
             </MenuItem>
+
             <MenuItem Header="A_yuda">
-                <MenuItem Header="Acerca de Notepad JM" Click="About_Click" />
+                <MenuItem Header="Acerca de Notepad JM"
+                          Command="{Binding AboutCommand}" />
             </MenuItem>
         </Menu>
 
-        <Border DockPanel.Dock="Bottom" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1,1,0,0" Padding="12,7">
+        <Border DockPanel.Dock="Bottom"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1,1,0,0"
+                Padding="12,7">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -53,28 +108,64 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock x:Name="StatusPath" Foreground="{DynamicResource MutedTextBrush}" Text="Sin título" />
-                <TextBlock x:Name="StatusLines" Grid.Column="1" Margin="18,0,0,0" Text="Líneas: 1" />
-                <TextBlock x:Name="StatusWords" Grid.Column="2" Margin="18,0,0,0" Text="Palabras: 0" />
-                <TextBlock x:Name="StatusChars" Grid.Column="3" Margin="18,0,0,0" Text="Caracteres: 0" />
-                <TextBlock x:Name="StatusZoom" Grid.Column="4" Margin="18,0,0,0" Text="100%" />
+
+                <TextBlock Foreground="{DynamicResource MutedTextBrush}"
+                           Text="{Binding StatusPath}" />
+                <TextBlock Grid.Column="1"
+                           Margin="18,0,0,0"
+                           Text="{Binding StatusLines}" />
+                <TextBlock Grid.Column="2"
+                           Margin="18,0,0,0"
+                           Text="{Binding StatusWords}" />
+                <TextBlock Grid.Column="3"
+                           Margin="18,0,0,0"
+                           Text="{Binding StatusCharacters}" />
+                <TextBlock Grid.Column="4"
+                           Margin="18,0,0,0"
+                           Text="{Binding ZoomText}" />
             </Grid>
         </Border>
 
-        <TabControl x:Name="DocumentsTabControl" ItemsSource="{Binding Documents}" SelectedItem="{Binding SelectedDocument}" SelectionChanged="DocumentsTabControl_SelectionChanged" Background="{DynamicResource WindowBackgroundBrush}" BorderThickness="0">
+        <TabControl x:Name="DocumentsTabControl"
+                    ItemsSource="{Binding Documents}"
+                    SelectedItem="{Binding SelectedDocument, Mode=TwoWay}"
+                    Background="{DynamicResource WindowBackgroundBrush}"
+                    BorderThickness="0">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:DocumentTab}">
-                    <TextBlock Text="{Binding Header}" Margin="8,2" />
+                    <TextBlock Margin="8,2"
+                               Text="{Binding Header}" />
                 </DataTemplate>
             </TabControl.ItemTemplate>
+
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="{x:Type models:DocumentTab}">
                     <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}"
-                             AcceptsReturn="True" AcceptsTab="True"
-                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                             TextWrapping="Wrap" Padding="18"
-                             SpellCheck.IsEnabled="True"
-                             TextChanged="Editor_TextChanged" />
+                             FontSize="{Binding DataContext.EditorFontSize, RelativeSource={RelativeSource AncestorType=Window}}"
+                             AcceptsReturn="True"
+                             AcceptsTab="True"
+                             VerticalScrollBarVisibility="Auto"
+                             Padding="18"
+                             SpellCheck.IsEnabled="True">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox"
+                                   BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="TextWrapping"
+                                        Value="NoWrap" />
+                                <Setter Property="HorizontalScrollBarVisibility"
+                                        Value="Auto" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DataContext.IsWordWrapEnabled, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                 Value="True">
+                                        <Setter Property="TextWrapping"
+                                                Value="Wrap" />
+                                        <Setter Property="HorizontalScrollBarVisibility"
+                                                Value="Disabled" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
