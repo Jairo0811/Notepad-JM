@@ -2,6 +2,12 @@
   <img src="src/NotepadJM/Assets/NotepadJM-Logo.jpg" alt="Logo de Notepad JM" width="500">
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/version-2.0.0-512BD4?style=flat-square" alt="Versión 2.0.0" />
+  <img src="https://img.shields.io/badge/platform-Windows-0078D6?style=flat-square&logo=windows" alt="Windows" />
+  <img src="https://img.shields.io/badge/status-Stable-2EA44F?style=flat-square" alt="Estado estable" />
+  <img src="https://img.shields.io/badge/license-MIT-2EA44F?style=flat-square" alt="Licencia MIT" />
+</p>
 
 **Notepad JM** es un editor de texto moderno para Windows, desarrollado con **C#**, **WPF** y **.NET 10**.
 
@@ -23,11 +29,11 @@ El proyecto nació como una tarea de la asignatura **Diseño Centrado en el Usua
 
 ## ✨ Funcionalidades
 
-- Edición mediante múltiples pestañas.
+- Edición mediante múltiples pestañas con botón de cierre e indicador de cambios.
 - Nuevo, abrir, guardar, guardar como y guardar todo.
 - Guardado seguro mediante archivo temporal.
 - Confirmación de cambios antes de cerrar.
-- Apertura de múltiples archivos.
+- Apertura de múltiples archivos y prevención de duplicados.
 - Arrastrar y soltar archivos sobre la ventana.
 - Deshacer, rehacer, cortar, copiar, pegar y seleccionar todo.
 - Buscar, reemplazar y reemplazar todas las coincidencias.
@@ -37,9 +43,10 @@ El proyecto nació como una tarea de la asignatura **Diseño Centrado en el Usua
 - Temas claro y oscuro.
 - Corrector ortográfico integrado.
 - Contador de líneas, palabras y caracteres.
-- Barra de estado con ruta y nivel de zoom.
+- Barra de estado con ruta, línea, columna, codificación y zoom.
 - Archivos recientes persistidos localmente.
 - Recuperación automática de documentos sin guardar.
+- Registro local de errores inesperados.
 - Compatibilidad con TXT, Markdown, JSON, XML, HTML, CSS, JavaScript, TypeScript, C#, Java, Python y SQL.
 - Atajos de teclado para las operaciones principales.
 
@@ -49,12 +56,12 @@ La solución utiliza el patrón **MVVM** con servicios desacoplados para persist
 
 ```text
 Notepad-JM/
+├── .github/
+│   └── workflows/
+│       └── build.yml
 ├── src/
 │   └── NotepadJM/
 │       ├── Assets/
-│       │   ├── AppIcon.ico
-│       │   ├── AppIcon.png
-│       │   └── NotepadJM-Logo.jpg
 │       ├── Commands/
 │       ├── Models/
 │       ├── Services/
@@ -63,11 +70,13 @@ Notepad-JM/
 │       ├── FindReplaceWindow.xaml
 │       ├── MainWindow.xaml
 │       └── NotepadJM.csproj
+├── .editorconfig
+├── LICENSE
 ├── NotepadJM.sln
 └── README.md
 ```
 
-`MainWindowViewModel` coordina los documentos y comandos de la aplicación. Los servicios abstraen el acceso a archivos, la configuración local, la recuperación automática, los diálogos y el cambio de tema. El code-behind queda limitado a responsabilidades propias de WPF, como el arrastre de archivos y la interacción con la selección del editor.
+`MainWindowViewModel` coordina los documentos y comandos de la aplicación. Los servicios abstraen el acceso a archivos, la configuración local, la recuperación automática, los diálogos, el registro de errores y el cambio de tema. El code-behind queda limitado a responsabilidades propias de WPF, como el arrastre de archivos, la selección y la posición del cursor.
 
 ## 🛠️ Stack tecnológico
 
@@ -96,7 +105,7 @@ Notepad-JM/
 
 - Windows 10 u 11.
 - .NET 10 SDK.
-- Visual Studio 2026 o una versión compatible con .NET 10 y WPF.
+- Visual Studio con soporte para .NET 10 y desarrollo de escritorio con WPF.
 
 ### Desde la terminal
 
@@ -133,6 +142,7 @@ dotnet publish .\src\NotepadJM\NotepadJM.csproj `
 | Abrir | `Ctrl + O` |
 | Guardar | `Ctrl + S` |
 | Guardar como | `Ctrl + Shift + S` |
+| Guardar todo | `Ctrl + Alt + S` |
 | Cerrar pestaña | `Ctrl + W` |
 | Buscar y reemplazar | `Ctrl + H` |
 | Insertar fecha y hora | `F5` |
@@ -142,13 +152,13 @@ dotnet publish .\src\NotepadJM\NotepadJM.csproj `
 
 ## 🗂️ Datos locales
 
-Notepad JM guarda sus preferencias y archivos de recuperación en:
+Notepad JM guarda sus preferencias, archivos de recuperación y registros en:
 
 ```text
 %LOCALAPPDATA%\NotepadJM
 ```
 
-Los documentos recuperables se eliminan después de guardarse correctamente o cerrar la aplicación de forma segura.
+Los documentos recuperables se eliminan después de guardarse correctamente o cerrar la aplicación de forma segura. Los errores inesperados se almacenan en `Logs` sin interrumpir el uso normal del editor.
 
 ## 🧭 Historia
 
@@ -161,4 +171,4 @@ Tecnólogo en Desarrollo de Software e Ingeniero de Software en formación.
 
 ## 📄 Licencia
 
-Este proyecto puede utilizarse con fines educativos y de portafolio. Se recomienda agregar una licencia formal antes de distribuirlo comercialmente.
+Distribuido bajo la **MIT License**. Consulta el archivo [`LICENSE`](LICENSE) para conocer los términos.

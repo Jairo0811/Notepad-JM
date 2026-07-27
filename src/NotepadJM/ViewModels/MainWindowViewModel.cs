@@ -29,6 +29,8 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
     private bool _isWordWrapEnabled;
     private string _currentTheme;
     private bool _closedSuccessfully;
+    private int _cursorLine = 1;
+    private int _cursorColumn = 1;
 
     public MainWindowViewModel(
         IFileDialogService fileDialogService,
@@ -49,20 +51,12 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
 
         NewDocumentCommand = new RelayCommand(CreateDocument);
         OpenCommand = new RelayCommand(OpenFromDialog);
-        SaveCommand = new RelayCommand(
-            () => SaveSelected(),
-            HasSelectedDocument);
-        SaveAsCommand = new RelayCommand(
-            () => SaveSelectedAs(),
-            HasSelectedDocument);
-        SaveAllCommand = new RelayCommand(
-            SaveAll,
-            () => Documents.Count > 0);
-        CloseTabCommand = new RelayCommand(
-            CloseSelectedDocument,
-            HasSelectedDocument);
-        ExitCommand = new RelayCommand(
-            () => ExitRequested?.Invoke(this, EventArgs.Empty));
+        SaveCommand = new RelayCommand(() => SaveSelected(), HasSelectedDocument);
+        SaveAsCommand = new RelayCommand(() => SaveSelectedAs(), HasSelectedDocument);
+        SaveAllCommand = new RelayCommand(SaveAll, () => Documents.Count > 0);
+        CloseTabCommand = new RelayCommand(CloseSelectedDocument, HasSelectedDocument);
+        CloseDocumentCommand = new RelayCommand<DocumentTab>(CloseDocument);
+        ExitCommand = new RelayCommand(() => ExitRequested?.Invoke(this, EventArgs.Empty));
         FindReplaceCommand = new RelayCommand(
             () => FindReplaceRequested?.Invoke(this, EventArgs.Empty),
             HasSelectedDocument);
@@ -105,6 +99,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
                 return;
             }
 
+            UpdateCursorPosition(1, 1);
             NotifySelectedDocumentChanged();
         }
     }
@@ -142,6 +137,9 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
     public string StatusPath =>
         SelectedDocument?.FilePath ?? "Sin título";
 
+    public string CursorPositionText =>
+        $"Ln {_cursorLine}, Col {_cursorColumn}";
+
     public string StatusLines =>
         $"Líneas: {SelectedDocument?.LineCount ?? 1}";
 
@@ -160,6 +158,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
     public RelayCommand SaveAsCommand { get; }
     public RelayCommand SaveAllCommand { get; }
     public RelayCommand CloseTabCommand { get; }
+    public RelayCommand<DocumentTab> CloseDocumentCommand { get; }
     public ICommand ExitCommand { get; }
     public RelayCommand FindReplaceCommand { get; }
     public RelayCommand InsertDateTimeCommand { get; }
@@ -173,6 +172,13 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
     public event EventHandler? ExitRequested;
     public event EventHandler? FindReplaceRequested;
     public event EventHandler? InsertDateTimeRequested;
+
+    public void UpdateCursorPosition(int line, int column)
+    {
+        _cursorLine = Math.Max(1, line);
+        _cursorColumn = Math.Max(1, column);
+        OnPropertyChanged(nameof(CursorPositionText));
+    }
 
     public void OpenDocuments(IEnumerable<string> paths)
     {
@@ -227,10 +233,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
 
     private void CreateDocument() => CreateDocument(string.Empty, null, false);
 
-    private void CreateDocument(
-        string content,
-        string? path,
-        bool isDirty)
+    private void CreateDocument(string content, string? path, bool isDirty)
     {
         var document = new DocumentTab();
         document.Load(content, path);
@@ -248,10 +251,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
     private void OpenDocument(string path)
     {
         var existingDocument = Documents.FirstOrDefault(document =>
-            string.Equals(
-                document.FilePath,
-                path,
-                StringComparison.OrdinalIgnoreCase));
+            string.Equals(document.FilePath, path, StringComparison.OrdinalIgnoreCase));
 
         if (existingDocument is not null)
         {
@@ -261,16 +261,15 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
 
         try
         {
-            CreateDocument(
-                _documentFileService.Read(path),
-                path,
-                false);
+            CreateDocument(_documentFileService.Read(path), path, false);
             AddRecentFile(path);
         }
         catch (Exception exception) when (
             exception is IOException
-            or UnauthorizedAccessException)
+            or UnauthorizedAccessException
+            or NotSupportedException)
         {
+            AppLogger.Log(exception, $"Open file failed: {path}");
             _userDialogService.ShowError(
                 $"No se pudo abrir el archivo.\n\n{exception.Message}");
         }
@@ -285,9 +284,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
 
         return string.IsNullOrWhiteSpace(SelectedDocument.FilePath)
             ? SaveSelectedAs()
-            : SaveDocument(
-                SelectedDocument,
-                SelectedDocument.FilePath);
+            : SaveDocument(SelectedDocument, SelectedDocument.FilePath);
     }
 
     private bool SaveSelectedAs()
@@ -303,19 +300,14 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
                 : SelectedDocument.DisplayName;
 
         var path = _fileDialogService.ShowSaveFile(suggestedFileName);
-        return path is not null
-            && SaveDocument(SelectedDocument, path);
+        return path is not null && SaveDocument(SelectedDocument, path);
     }
 
-    private bool SaveDocument(
-        DocumentTab document,
-        string path)
+    private bool SaveDocument(DocumentTab document, string path)
     {
         try
         {
-            _documentFileService.WriteAtomically(
-                path,
-                document.Content);
+            _documentFileService.WriteAtomically(path, document.Content);
 
             document.FilePath = path;
             document.IsDirty = false;
@@ -326,8 +318,10 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
         }
         catch (Exception exception) when (
             exception is IOException
-            or UnauthorizedAccessException)
+            or UnauthorizedAccessException
+            or NotSupportedException)
         {
+            AppLogger.Log(exception, $"Save file failed: {path}");
             _userDialogService.ShowError(
                 $"No se pudo guardar el archivo.\n\n{exception.Message}");
             return false;
@@ -356,8 +350,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
 
         SelectedDocument = document;
 
-        return _userDialogService.ConfirmSaveChanges(
-            document.DisplayName) switch
+        return _userDialogService.ConfirmSaveChanges(document.DisplayName) switch
         {
             SaveChangesChoice.Save => SaveSelected(),
             SaveChangesChoice.Discard => true,
@@ -367,13 +360,19 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
 
     private void CloseSelectedDocument()
     {
-        if (SelectedDocument is null
-            || !ConfirmSave(SelectedDocument))
+        if (SelectedDocument is not null)
+        {
+            CloseDocument(SelectedDocument);
+        }
+    }
+
+    private void CloseDocument(DocumentTab? document)
+    {
+        if (document is null || !ConfirmSave(document))
         {
             return;
         }
 
-        var document = SelectedDocument;
         document.PropertyChanged -= Document_PropertyChanged;
         _appDataService.DeleteRecovery(document);
         Documents.Remove(document);
@@ -382,7 +381,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
         {
             CreateDocument();
         }
-        else
+        else if (ReferenceEquals(SelectedDocument, document))
         {
             SelectedDocument = Documents.Last();
         }
@@ -410,10 +409,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
     private void AddRecentFile(string path)
     {
         _settings.RecentFiles.RemoveAll(recentPath =>
-            string.Equals(
-                recentPath,
-                path,
-                StringComparison.OrdinalIgnoreCase));
+            string.Equals(recentPath, path, StringComparison.OrdinalIgnoreCase));
 
         _settings.RecentFiles.Insert(0, path);
 
@@ -436,8 +432,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
 
     private void RestoreRecoveredDocuments()
     {
-        var recoveredDocuments =
-            _appDataService.LoadRecoveredDocuments();
+        var recoveredDocuments = _appDataService.LoadRecoveredDocuments();
 
         if (recoveredDocuments.Count == 0)
         {
@@ -448,8 +443,7 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
         {
             foreach (var recoveredDocument in recoveredDocuments)
             {
-                _appDataService.DeleteRecoveryFile(
-                    recoveredDocument.RecoveryFilePath);
+                _appDataService.DeleteRecoveryFile(recoveredDocument.RecoveryFilePath);
             }
 
             return;
@@ -462,15 +456,13 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
                 recoveredDocument.FilePath,
                 true);
 
-            _appDataService.DeleteRecoveryFile(
-                recoveredDocument.RecoveryFilePath);
+            _appDataService.DeleteRecoveryFile(recoveredDocument.RecoveryFilePath);
         }
     }
 
     private void SaveRecoveryFiles()
     {
-        foreach (var document in Documents.Where(
-                     document => document.IsDirty))
+        foreach (var document in Documents.Where(document => document.IsDirty))
         {
             _appDataService.SaveRecovery(document);
         }
@@ -508,16 +500,11 @@ public sealed class MainWindowViewModel : ObservableObject, IDisposable
         }
     }
 
-    private void AutoSaveTimer_Tick(
-        object? sender,
-        EventArgs e) =>
+    private void AutoSaveTimer_Tick(object? sender, EventArgs e) =>
         SaveRecoveryFiles();
 
     private static string NormalizeTheme(string theme) =>
-        string.Equals(
-            theme,
-            "Light",
-            StringComparison.OrdinalIgnoreCase)
+        string.Equals(theme, "Light", StringComparison.OrdinalIgnoreCase)
             ? "Light"
             : "Dark";
 }

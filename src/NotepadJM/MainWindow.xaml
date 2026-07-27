@@ -15,82 +15,42 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Archivo">
-                <MenuItem Header="_Nuevo"
-                          InputGestureText="Ctrl+N"
-                          Command="{Binding NewDocumentCommand}" />
-                <MenuItem Header="_Abrir..."
-                          InputGestureText="Ctrl+O"
-                          Command="{Binding OpenCommand}" />
+                <MenuItem Header="_Nuevo" InputGestureText="Ctrl+N" Command="{Binding NewDocumentCommand}" />
+                <MenuItem Header="_Abrir..." InputGestureText="Ctrl+O" Command="{Binding OpenCommand}" />
                 <Separator />
-                <MenuItem Header="_Guardar"
-                          InputGestureText="Ctrl+S"
-                          Command="{Binding SaveCommand}" />
-                <MenuItem Header="Guardar _como..."
-                          InputGestureText="Ctrl+Shift+S"
-                          Command="{Binding SaveAsCommand}" />
-                <MenuItem Header="Guardar _todo"
-                          InputGestureText="Ctrl+Alt+S"
-                          Command="{Binding SaveAllCommand}" />
+                <MenuItem Header="_Guardar" InputGestureText="Ctrl+S" Command="{Binding SaveCommand}" />
+                <MenuItem Header="Guardar _como..." InputGestureText="Ctrl+Shift+S" Command="{Binding SaveAsCommand}" />
+                <MenuItem Header="Guardar _todo" InputGestureText="Ctrl+Alt+S" Command="{Binding SaveAllCommand}" />
                 <Separator />
-                <MenuItem Header="Cerrar pestaña"
-                          InputGestureText="Ctrl+W"
-                          Command="{Binding CloseTabCommand}" />
-                <MenuItem Header="_Salir"
-                          Command="{Binding ExitCommand}" />
+                <MenuItem Header="Cerrar pestaña" InputGestureText="Ctrl+W" Command="{Binding CloseTabCommand}" />
+                <MenuItem Header="_Salir" Command="{Binding ExitCommand}" />
             </MenuItem>
 
             <MenuItem Header="_Edición">
-                <MenuItem Header="Deshacer"
-                          InputGestureText="Ctrl+Z"
-                          Command="ApplicationCommands.Undo" />
-                <MenuItem Header="Rehacer"
-                          InputGestureText="Ctrl+Y"
-                          Command="ApplicationCommands.Redo" />
+                <MenuItem Header="Deshacer" InputGestureText="Ctrl+Z" Command="ApplicationCommands.Undo" />
+                <MenuItem Header="Rehacer" InputGestureText="Ctrl+Y" Command="ApplicationCommands.Redo" />
                 <Separator />
-                <MenuItem Header="Cortar"
-                          InputGestureText="Ctrl+X"
-                          Command="ApplicationCommands.Cut" />
-                <MenuItem Header="Copiar"
-                          InputGestureText="Ctrl+C"
-                          Command="ApplicationCommands.Copy" />
-                <MenuItem Header="Pegar"
-                          InputGestureText="Ctrl+V"
-                          Command="ApplicationCommands.Paste" />
-                <MenuItem Header="Seleccionar todo"
-                          InputGestureText="Ctrl+A"
-                          Command="ApplicationCommands.SelectAll" />
+                <MenuItem Header="Cortar" InputGestureText="Ctrl+X" Command="ApplicationCommands.Cut" />
+                <MenuItem Header="Copiar" InputGestureText="Ctrl+C" Command="ApplicationCommands.Copy" />
+                <MenuItem Header="Pegar" InputGestureText="Ctrl+V" Command="ApplicationCommands.Paste" />
+                <MenuItem Header="Seleccionar todo" InputGestureText="Ctrl+A" Command="ApplicationCommands.SelectAll" />
                 <Separator />
-                <MenuItem Header="Buscar y reemplazar"
-                          InputGestureText="Ctrl+H"
-                          Command="{Binding FindReplaceCommand}" />
-                <MenuItem Header="Insertar fecha y hora"
-                          InputGestureText="F5"
-                          Command="{Binding InsertDateTimeCommand}" />
+                <MenuItem Header="Buscar y reemplazar" InputGestureText="Ctrl+H" Command="{Binding FindReplaceCommand}" />
+                <MenuItem Header="Insertar fecha y hora" InputGestureText="F5" Command="{Binding InsertDateTimeCommand}" />
             </MenuItem>
 
             <MenuItem Header="_Ver">
-                <MenuItem Header="Ajuste de línea"
-                          IsCheckable="True"
-                          IsChecked="{Binding IsWordWrapEnabled, Mode=TwoWay}" />
-                <MenuItem Header="Acercar"
-                          InputGestureText="Ctrl++"
-                          Command="{Binding ZoomInCommand}" />
-                <MenuItem Header="Alejar"
-                          InputGestureText="Ctrl+-"
-                          Command="{Binding ZoomOutCommand}" />
-                <MenuItem Header="Restablecer zoom"
-                          InputGestureText="Ctrl+0"
-                          Command="{Binding ResetZoomCommand}" />
+                <MenuItem Header="Ajuste de línea" IsCheckable="True" IsChecked="{Binding IsWordWrapEnabled, Mode=TwoWay}" />
+                <MenuItem Header="Acercar" InputGestureText="Ctrl++" Command="{Binding ZoomInCommand}" />
+                <MenuItem Header="Alejar" InputGestureText="Ctrl+-" Command="{Binding ZoomOutCommand}" />
+                <MenuItem Header="Restablecer zoom" InputGestureText="Ctrl+0" Command="{Binding ResetZoomCommand}" />
                 <Separator />
-                <MenuItem Header="Tema oscuro"
-                          Command="{Binding DarkThemeCommand}" />
-                <MenuItem Header="Tema claro"
-                          Command="{Binding LightThemeCommand}" />
+                <MenuItem Header="Tema oscuro" Command="{Binding DarkThemeCommand}" />
+                <MenuItem Header="Tema claro" Command="{Binding LightThemeCommand}" />
             </MenuItem>
 
             <MenuItem Header="A_yuda">
-                <MenuItem Header="Acerca de Notepad JM"
-                          Command="{Binding AboutCommand}" />
+                <MenuItem Header="Acerca de Notepad JM" Command="{Binding AboutCommand}" />
             </MenuItem>
         </Menu>
 
@@ -106,22 +66,17 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Foreground="{DynamicResource MutedTextBrush}"
-                           Text="{Binding StatusPath}" />
-                <TextBlock Grid.Column="1"
-                           Margin="18,0,0,0"
-                           Text="{Binding StatusLines}" />
-                <TextBlock Grid.Column="2"
-                           Margin="18,0,0,0"
-                           Text="{Binding StatusWords}" />
-                <TextBlock Grid.Column="3"
-                           Margin="18,0,0,0"
-                           Text="{Binding StatusCharacters}" />
-                <TextBlock Grid.Column="4"
-                           Margin="18,0,0,0"
-                           Text="{Binding ZoomText}" />
+                <TextBlock Foreground="{DynamicResource MutedTextBrush}" Text="{Binding StatusPath}" TextTrimming="CharacterEllipsis" />
+                <TextBlock Grid.Column="1" Margin="18,0,0,0" Text="{Binding CursorPositionText}" />
+                <TextBlock Grid.Column="2" Margin="18,0,0,0" Text="{Binding StatusLines}" />
+                <TextBlock Grid.Column="3" Margin="18,0,0,0" Text="{Binding StatusWords}" />
+                <TextBlock Grid.Column="4" Margin="18,0,0,0" Text="{Binding StatusCharacters}" />
+                <TextBlock Grid.Column="5" Margin="18,0,0,0" Text="UTF-8" />
+                <TextBlock Grid.Column="6" Margin="18,0,0,0" Text="{Binding ZoomText}" />
             </Grid>
         </Border>
 
@@ -132,34 +87,40 @@
                     BorderThickness="0">
             <TabControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:DocumentTab}">
-                    <TextBlock Margin="8,2"
-                               Text="{Binding Header}" />
+                    <StackPanel Orientation="Horizontal" ToolTip="{Binding FilePath}">
+                        <TextBlock Margin="8,2" VerticalAlignment="Center" Text="{Binding Header}" />
+                        <Button Width="22"
+                                Height="22"
+                                Margin="4,0,2,0"
+                                Padding="0"
+                                VerticalAlignment="Center"
+                                Content="×"
+                                ToolTip="Cerrar pestaña"
+                                Command="{Binding DataContext.CloseDocumentCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                CommandParameter="{Binding}" />
+                    </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
 
             <TabControl.ContentTemplate>
                 <DataTemplate DataType="{x:Type models:DocumentTab}">
                     <TextBox Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}"
+                             FontFamily="Cascadia Mono, Consolas"
                              FontSize="{Binding DataContext.EditorFontSize, RelativeSource={RelativeSource AncestorType=Window}}"
                              AcceptsReturn="True"
                              AcceptsTab="True"
                              VerticalScrollBarVisibility="Auto"
                              Padding="18"
-                             SpellCheck.IsEnabled="True">
+                             SpellCheck.IsEnabled="True"
+                             SelectionChanged="Editor_SelectionChanged">
                         <TextBox.Style>
-                            <Style TargetType="TextBox"
-                                   BasedOn="{StaticResource {x:Type TextBox}}">
-                                <Setter Property="TextWrapping"
-                                        Value="NoWrap" />
-                                <Setter Property="HorizontalScrollBarVisibility"
-                                        Value="Auto" />
+                            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                <Setter Property="TextWrapping" Value="NoWrap" />
+                                <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DataContext.IsWordWrapEnabled, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                 Value="True">
-                                        <Setter Property="TextWrapping"
-                                                Value="Wrap" />
-                                        <Setter Property="HorizontalScrollBarVisibility"
-                                                Value="Disabled" />
+                                    <DataTrigger Binding="{Binding DataContext.IsWordWrapEnabled, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
